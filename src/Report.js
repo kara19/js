@@ -1,32 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import ReactMd from 'react-md-file';
+import React, { useEffect, useState, Component } from 'react';
+import ReactMarkdown from 'react-markdown'
+import marked from "marked";
+import termsFrPath from './README.md'
 
-const Report = ({ match }) => {
-  const kmom = 'kmom0' + match.params.kmom;
-  const [questions, setQuestions] = useState([]);
 
-  useEffect(() => {
-    fetch(`./README.md`)
-      .then(res => res.json())
-      .then(res => setQuestions(res));
-  });
+class Report extends Component {
+  constructor(props) {
+    super(props)
 
-  const QuestionsList = () =>
-    questions.map((question, index) => (
-      <div className="question" key={index}>
-        <p>
-          <strong>{question.question}</strong>
-        </p>
-        <p>{question.answer}</p>
+    this.state = { terms: null }
+  }
+
+  componentWillMount() {
+    fetch(termsFrPath).then((response) => response.text()).then((text) => {
+      this.setState({ terms: text })
+    })
+  }
+
+  render() {
+    return (
+      <div className="content">
+        <ReactMarkdown source={this.state.terms} />
       </div>
-    ));
-
-  return (
-    <main>
-      <h2>{kmom}</h2>
-      <QuestionsList />
-    </main>
-  );
-};
-
+    )
+  }
+}
 export default Report;

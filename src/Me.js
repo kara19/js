@@ -19,9 +19,12 @@ const Me = () => {
 
   return (
     <main>
-      <h1>About me</h1>
+
+      <div className="content">
+      <h2>About me</h2>
       <p>{name}</p>
       <p>{message}</p>
+      </div>
     </main>
   );
 };
